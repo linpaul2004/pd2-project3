@@ -15,6 +15,7 @@ CandyCrush::CandyCrush(QWidget *parent) :
         std::sprintf(tmp,"%d",numboard[i]);
         board[i]->setText(tmp);
         board[i]->setCheckable(true);
+        board[i]->setFont(QFont("Arial",15));
         connect(board[i],SIGNAL(clicked()),this,SLOT(select()));
     }
 }
@@ -45,14 +46,12 @@ void CandyCrush::sleep(int t){
 void CandyCrush::down(){
     for(int row=SIDE-2;row>=0;row--){
         for(int col=0;col<SIDE;col++){
-            if(numboard[row*SIDE+col]!=0){
-                for(int i=row;i<SIDE-1;i++){
-                    if(numboard[(i+1)*SIDE+col]==0){
-                        numboard[(i+1)*SIDE+col]=numboard[i*SIDE+col];
-                        numboard[i*SIDE+col]=0;
-                    }else{
-                        break;
-                    }
+            for(int i=row;i<SIDE-1;i++){
+                if(numboard[(i+1)*SIDE+col]==0){
+                    numboard[(i+1)*SIDE+col]=numboard[i*SIDE+col];
+                    numboard[i*SIDE+col]=0;
+                }else{
+                    break;
                 }
             }
         }
@@ -78,16 +77,34 @@ void CandyCrush::select(){
                     numboard[i]=numboard[record];
                     numboard[record]=itmp;
                     if(kill(numboard)){
+                        update();
+                        sleep(2000);
                         down();
+                        update();
+                        sleep(2000);
                         fill();
+                        update();
+                        sleep(2000);
                         while(kill(numboard)){
+                            update();
+                            sleep(2000);
                             down();
+                            update();
+                            sleep(2000);
                             fill();
+                            update();
+                            sleep(2000);
                         }
                         update();
                     }else{
                         sleep(250);
                         move(record,i);
+                        tmp=board[i];
+                        board[i]=board[record];
+                        board[record]=tmp;
+                        itmp=numboard[i];
+                        numboard[i]=numboard[record];
+                        numboard[record]=itmp;
                     }
                 }else{
                     board[record]->setChecked(false);
@@ -116,7 +133,7 @@ void CandyCrush::fill(){
 
 void CandyCrush::newboard(int *a){
     for(int i=0;i<SIDE*SIDE;i++){
-        a[i]=std::rand()%4+1;
+        a[i]=std::rand()%7+1;
     }
     while(kill(a)){
         fill();
@@ -164,6 +181,15 @@ void CandyCrush::update(){
         std::sprintf(tmp,"%d",numboard[i]);
         board[i]->setText(tmp);
         board[i]->setCheckable(true);
+    }
+    for(int i=0;i<SIDE*SIDE;i++){
+        std::printf("%d ",numboard[i]);
+        if(i==SIDE*SIDE-1){
+            std::puts("");
+        }
+        if((i+1)%SIDE==0){
+            std::puts("");
+        }
     }
 }
 
