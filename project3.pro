@@ -13,8 +13,25 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        candycrush.cpp
+        candycrush.cpp \
+    stone.cpp \
+    stone1.cpp \
+    stone2.cpp \
+    stone3.cpp \
+    stone4.cpp \
+    stone5.cpp \
+    genstone.cpp
 
-HEADERS  += candycrush.h
+HEADERS  += candycrush.h \
+    stone.h \
+    stone1.h \
+    stone2.h \
+    stone3.h \
+    stone4.h \
+    stone5.h \
+    genstone.h
 
 FORMS    += candycrush.ui
+
+RESOURCES += \
+    res.qrc

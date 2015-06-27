@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>stone1.png</file>
+        <file>stone2.png</file>
+        <file>stone3.png</file>
+        <file>stone4.png</file>
+        <file>stone5.png</file>
+    </qresource>
+</RCC>
