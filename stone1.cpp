@@ -5,7 +5,6 @@ Stone1::Stone1(QWidget *parent,int loc)
     but=new Stone(parent);
 //    check=false;
     location=loc;
-    special=0;
     but->setScaledContents(true);
 }
 

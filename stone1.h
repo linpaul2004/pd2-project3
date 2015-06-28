@@ -22,7 +22,6 @@ public:
     virtual void setChecked(bool);
     int location;
     Stone* but;
-    int special;
 };
 
 #endif // STONE1_H

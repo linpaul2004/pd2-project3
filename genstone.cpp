@@ -1,10 +1,7 @@
 #include "genstone.h"
 
-Stone1* genStone(int l, QWidget *parent, int design){
+Stone1* genStone(int l, QWidget *parent){
     int type=std::rand()%TOTAL+1;
-    if(design!=0){
-        type=design;
-    }
     Stone1* ptr=NULL;
     switch(type){
     case 1:
