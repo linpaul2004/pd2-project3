@@ -5,6 +5,7 @@ Stone4::Stone4(QWidget *parent,int loc):Stone1(parent,loc)
 //    but=new Stone(parent);
 //    check=false;
 //    location=loc;
+    but->setScaledContents(true);
 }
 
 Stone4::~Stone4()
@@ -13,9 +14,15 @@ Stone4::~Stone4()
 }
 
 void Stone4::loadpic(){
-    QPixmap icon(":/icon/stone4.png");
+    QPixmap icon;
+    if(special!=0){
+        char tmp[25];
+        std::sprintf(tmp,":/icon/stone4-%d.png",special);
+        icon.load(tmp);
+    }else{
+        icon.load(":/icon/stone4.png");
+    }
     but->setPixmap(icon);
-    but->setScaledContents(true);
     but->setGeometry(MARGIN+(location%SIDE)*SIZE,MARGIN+(location/SIDE)*SIZE,SIZE,SIZE);
     but->show();
 }

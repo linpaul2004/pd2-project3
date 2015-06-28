@@ -164,6 +164,41 @@ void CandyCrush::newboard(){
     score.setScore(0);
 }
 
+void CandyCrush::specreat(bool *m){
+    fill();
+    bool my[SIDE*SIDE];
+    for(int i=0;i<SIDE*SIDE;i++){
+        my[i]=m[i];
+    }
+    int kill=0;
+    for(int i=0;i<SIDE*SIDE-SIDE*3;i++){
+        kill=0;
+        if(my[i]){
+            my[i]=false;
+            kill++;
+            while(1){
+                if(my[i+SIDE]){
+                    my[i+SIDE]=false;
+                    kill++;
+                }else{
+                    if(kill>=4){
+                        int type=board[i]->type();
+                        if(board[i]!=NULL){
+                            delete board[i];
+                        }
+                        board[i]=genStone(i,this,type);
+                        connect(board[i]->but,SIGNAL(clicked()),this,SLOT(select()));
+                        board[i]->special=VER;
+                        m[i]=false;
+                    }
+                    break;
+                }
+                i+=SIDE;
+            }
+        }
+    }
+}
+
 bool CandyCrush::kill(){
     bool tokill[SIDE*SIDE]={false};
     bool need=false;
@@ -187,16 +222,37 @@ bool CandyCrush::kill(){
             }
         }
     }
+    specreat(tokill);
     for(int i=0;i<SIDE*SIDE;i++){
         if(tokill[i]){
-            board[i]->but->disconnect();
-            delete board[i];
-            board[i]=NULL;
+            switch(board[i]->special){
+            case 0:
+                if(board[i]!=NULL){
+                    board[i]->but->disconnect();
+                    delete board[i];
+                    board[i]=NULL;
+                }
+                break;
+            case VER:
+                killver(i);
+                break;
+            }
         }
     }
     score+=tokill;
-    update();
+//    update();
     return need;
+}
+
+void CandyCrush::killver(int j){
+    for(int i=0;i<SIDE;i++){
+        if(board[i*SIDE+j%SIDE]!=NULL){
+            printf("%d->type=%d\n",i*SIDE+j%SIDE,board[i*SIDE]->type());
+            board[i*SIDE+j%SIDE]->but->disconnect();
+            delete board[i*SIDE+j%SIDE];
+            board[i*SIDE+j%SIDE]=NULL;
+        }
+    }
 }
 
 CandyCrush::~CandyCrush()

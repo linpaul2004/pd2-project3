@@ -9,6 +9,6 @@
 #include "stone5.h"
 #define TOTAL 5
 
-Stone1* genStone(int l,QWidget* parent=0);
+Stone1* genStone(int l,QWidget* parent=0,int design=0);
 
 #endif // GENSTONE_H

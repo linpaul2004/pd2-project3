@@ -2,6 +2,7 @@
 #define STONE1_H
 
 #include <QObject>
+#include <cstdio>
 #include "stone.h"
 #define MARGIN 10
 #define SIZE 50

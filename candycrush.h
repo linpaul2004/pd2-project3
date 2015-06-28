@@ -9,6 +9,7 @@
 #include <set>
 #include <cstdlib>
 #include <ctime>
+#include <stack>
 #include "genstone.h"
 #include "score.h"
 #include "over.h"
@@ -46,6 +47,8 @@ private:
     void newboard();
     void sleep(int t);
     bool kill();
+    void specreat(bool*);
+    void killver(int);
     Score score;
 //    std::set<int> tokill;
     Stone1* board[SIDE*SIDE];
