@@ -47,8 +47,8 @@ private:
     void newboard();
     void sleep(int t);
     bool kill();
-    void specreat(bool*);
-    void killver(int);
+//    void specreat(bool*);
+//    void killver(int);
     Score score;
 //    std::set<int> tokill;
     Stone1* board[SIDE*SIDE];

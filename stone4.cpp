@@ -15,13 +15,7 @@ Stone4::~Stone4()
 
 void Stone4::loadpic(){
     QPixmap icon;
-    if(special!=0){
-        char tmp[25];
-        std::sprintf(tmp,":/icon/stone4-%d.png",special);
-        icon.load(tmp);
-    }else{
-        icon.load(":/icon/stone4.png");
-    }
+    icon.load(":/icon/stone4.png");
     but->setPixmap(icon);
     but->setGeometry(MARGIN+(location%SIDE)*SIZE,MARGIN+(location/SIDE)*SIZE,SIZE,SIZE);
     but->show();
