@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "stone.h"
+#define MARGIN 10
+#define SIZE 50
 
 class Stone1
 {

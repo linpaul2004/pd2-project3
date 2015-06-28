@@ -5,5 +5,9 @@
         <file>stone3.png</file>
         <file>stone4.png</file>
         <file>stone5.png</file>
+        <file>star1.png</file>
+        <file>star2.png</file>
+        <file>star3.png</file>
+        <file>star0.png</file>
     </qresource>
 </RCC>

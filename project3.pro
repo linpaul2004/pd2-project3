@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     stone3.cpp \
     stone4.cpp \
     stone5.cpp \
-    genstone.cpp
+    genstone.cpp \
+    score.cpp \
+    over.cpp
 
 HEADERS  += candycrush.h \
     stone.h \
@@ -29,9 +31,12 @@ HEADERS  += candycrush.h \
     stone3.h \
     stone4.h \
     stone5.h \
-    genstone.h
+    genstone.h \
+    score.h \
+    over.h
 
-FORMS    += candycrush.ui
+FORMS    += candycrush.ui \
+    over.ui
 
 RESOURCES += \
     res.qrc

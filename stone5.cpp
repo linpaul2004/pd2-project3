@@ -16,7 +16,7 @@ void Stone5::loadpic(){
     QPixmap icon(":/icon/stone5.png");
     but->setPixmap(icon);
     but->setScaledContents(true);
-    but->setGeometry(10+(location%SIDE)*50,10+(location/SIDE)*50,50,50);
+    but->setGeometry(MARGIN+(location%SIDE)*SIZE,MARGIN+(location/SIDE)*SIZE,SIZE,SIZE);
     but->show();
 }
 

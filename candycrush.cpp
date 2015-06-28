@@ -6,6 +6,9 @@ CandyCrush::CandyCrush(QWidget *parent) :
     ui(new Ui::CandyCrush),selected(false)
 {
     ui->setupUi(this);
+    ui->STAR->setScaledContents(true);
+    over= new Over(this);
+    connect(this,SIGNAL(toOver(bool,int,int)),over,SLOT(construct(bool,int,int)));
     std::srand(std::time(NULL));
     for(int i=0;i<SIDE*SIDE;i++){
 //        printf("%d\n",i);
@@ -22,25 +25,25 @@ CandyCrush::CandyCrush(QWidget *parent) :
         down();
         fill();
     }
-    for(int i=0;i<SIDE*SIDE;i++){
-        printf("%d->%d\n",i,board[i]);
-    }
+//    for(int i=0;i<SIDE*SIDE;i++){
+//        printf("%d->%d\n",i,board[i]);
+//    }
+    score.setScore(0);
     update();
 }
-
 
 void CandyCrush::move(int from,int to){
     static QPropertyAnimation move[2];
     move[0].setPropertyName("geometry");
     move[0].setTargetObject(board[from]->but);
     move[0].setDuration(200);
-    move[0].setStartValue(QRect(10+(from%SIDE)*50,10+(from/SIDE)*50,50,50));
-    move[0].setEndValue(QRect(10+(to%SIDE)*50,10+(to/SIDE)*50,50,50));
+    move[0].setStartValue(QRect(MARGIN+(from%SIDE)*SIZE,MARGIN+(from/SIDE)*SIZE,SIZE,SIZE));
+    move[0].setEndValue(QRect(MARGIN+(to%SIDE)*SIZE,MARGIN+(to/SIDE)*SIZE,SIZE,SIZE));
     move[1].setPropertyName("geometry");
     move[1].setTargetObject(board[to]->but);
     move[1].setDuration(200);
-    move[1].setStartValue(QRect(10+(to%SIDE)*50,10+(to/SIDE)*50,50,50));
-    move[1].setEndValue(QRect(10+(from%SIDE)*50,10+(from/SIDE)*50,50,50));
+    move[1].setStartValue(QRect(MARGIN+(to%SIDE)*SIZE,MARGIN+(to/SIDE)*SIZE,SIZE,SIZE));
+    move[1].setEndValue(QRect(MARGIN+(from%SIDE)*SIZE,MARGIN+(from/SIDE)*SIZE,SIZE,SIZE));
     move[1].start();
     move[0].start();
     sleep(250);
@@ -87,9 +90,10 @@ void CandyCrush::select(){
         for(int i=0;i<SIDE*SIDE;i++){
             if(board[i]->isChecked() && record!=i){
                 if(record-i==1 || record-i==-1 || record-i==SIDE || record-i==-SIDE){
+                    ui->step->display(ui->step->intValue()-1);
                     move(record,i);
                     swap(board[i],board[record]);
-                    printf("i=%d,loc=%d<->record=%d,loc%d\n",i,board[i]->location,record,board[record]->location);
+//                    printf("i=%d,loc=%d<->record=%d,loc%d\n",i,board[i]->location,record,board[record]->location);
                     selected=false;
                     board[i]->setChecked(false);
                     board[record]->setChecked(false);
@@ -98,16 +102,16 @@ void CandyCrush::select(){
 //                    numboard[i]=numboard[record];
 //                    numboard[record]=itmp;
                     if(kill()){
-//                        sleep(2000);
+                        sleep(300);
                         down();
                         fill();
-//                        sleep(2000);
+                        sleep(300);
                         while(kill()){
-//                            sleep(2000);
+                            sleep(300);
                             down();
-//                            sleep(2000);
+                            sleep(300);
                             fill();
-//                            sleep(2000);
+                            sleep(300);
                             update();
                         }
                     }else{
@@ -133,7 +137,7 @@ void CandyCrush::select(){
             }
         }
     }
-    update();
+//    update();
 }
 
 void CandyCrush::fill(){
@@ -141,7 +145,7 @@ void CandyCrush::fill(){
         if(board[i]==NULL){
             board[i]=genStone(i,this);
             connect(board[i]->but,SIGNAL(clicked()),this,SLOT(select()));
-            printf("%d==NULL->%d\n",i,board[i]);
+//            printf("%d==NULL->%d\n",i,board[i]);
         }
     }
     update();
@@ -157,6 +161,7 @@ void CandyCrush::newboard(){
     while(kill()){
         fill();
     }
+    score.setScore(0);
 }
 
 bool CandyCrush::kill(){
@@ -189,6 +194,7 @@ bool CandyCrush::kill(){
             board[i]=NULL;
         }
     }
+    score+=tokill;
     update();
     return need;
 }
@@ -196,6 +202,13 @@ bool CandyCrush::kill(){
 CandyCrush::~CandyCrush()
 {
     delete ui;
+    for(int i=0;i<SIDE*SIDE;i++){
+        if(board[i]!=NULL){
+            delete board[i];
+        }
+    }
+    delete over;
+    emit quit(score.getStar(),score.getScore());
 }
 
 void CandyCrush::update(){
@@ -218,10 +231,29 @@ void CandyCrush::update(){
 //            std::puts("");
 //        }
 //    }
+    ui->num->display(score.getScore());
+    char tmp[25];
+    std::sprintf(tmp,":/icon/star%d.png",score.getStar());
+    QPixmap b(tmp);
+    ui->STAR->setPixmap(b);
+    if(ui->step->intValue()==0){
+        if(ui->num->intValue()<200){
+            emit toOver(false,score.getStar(),score.getScore());
+            emit quit(score.getStar(),score.getScore());
+        }else{
+            emit toOver(true,score.getStar(),score.getScore());
+            emit quit(score.getStar(),score.getScore());
+        }
+        over->setModal(true);
+        over->exec();
+        on_pushButton_clicked();
+    }
 }
 
 void CandyCrush::on_pushButton_clicked()
 {
+    ui->step->display(20);
+    score.setScore(0);
     newboard();
     update();
 }
