@@ -5,6 +5,10 @@
 #include "stone.h"
 #define MARGIN 10
 #define SIZE 50
+#define HOR 1
+#define VER 2
+#define BOM 3
+#define STA 4
 
 class Stone1
 {
@@ -17,6 +21,7 @@ public:
     virtual void setChecked(bool);
     int location;
     Stone* but;
+    int special;
 };
 
 #endif // STONE1_H

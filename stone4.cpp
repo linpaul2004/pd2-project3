@@ -1,10 +1,10 @@
 #include "stone4.h"
 
-Stone4::Stone4(QWidget *parent,int loc)
+Stone4::Stone4(QWidget *parent,int loc):Stone1(parent,loc)
 {
-    but=new Stone(parent);
+//    but=new Stone(parent);
 //    check=false;
-    location=loc;
+//    location=loc;
 }
 
 Stone4::~Stone4()
